@@ -1,0 +1,120 @@
+{% if section.blocks %}
+  <div class="product-specifications" id="section_product-specifications">
+    <div class="page-width">
+      {% for block in section.blocks %}
+        <div class="block__item {{ block.settings.block_allignment }}">
+          {% if block.settings.desc_image %}
+             <div class="block__item--img image-shadow {{ block.settings.image_shadow }}">
+              <img src="{{ block.settings.desc_image | img_url: '500x500' }}" alt="Product Image">
+             </div>
+          {% endif %}
+          <div class="block__item--content">
+            <h2>{{ block.settings.block_title }}</h2>    
+            <div class="content-discription">
+              <p>{{ block.settings.block_desc }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+{% schema %}
+  {
+  "name": "Product Specifications",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "product_specifications",
+      "name": "Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "block_title",
+          "label": "Block Title",
+          "default": "Create a clear and concise headline that summarizes one of the product's benefits"
+        },
+        {
+          "type": "image_picker",
+          "id": "desc_image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "label": "Image Width",
+          "min": 0,
+          "max": 500,
+          "step": 10,
+          "default": 300,
+          "unit": "px"
+       },
+       {
+          "type": "range",
+          "id": "image_border_radius",
+          "label": "Image Border Radius",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "default": 0,
+          "unit": "px"    
+      },
+      {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+      },
+      {
+         "type": "textarea",
+         "id" : "block_desc",
+         "label" : "Description",
+         "default" : "<p>Follow it with a compelling subtext that provide additional details and hightlights the product's uniquie features.</p>"
+        },
+    {
+      "type": "select",
+      "id": "image_shadow",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top Left"
+        },
+        {
+          "value": "top-right",
+          "label": "Top Right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom Right"
+        }
+      ],     
+      "label": "Image Shadow"
+    },
+    {
+          "type": "select",
+          "id": "block_allignment",
+          "options": [
+            {
+              "value": "image-left",
+              "label": "Image Left"
+            },
+            {
+              "value": "image-right",
+              "label": "Image Right"
+            }       
+          ],     
+          "label": "Block Allignment"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Specification Block"
+    }
+  ]
+}
+{% endschema %}
