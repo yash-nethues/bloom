@@ -1,0 +1,155 @@
+<div class="promotional__offers" style="background:{{ section.settings.background_color }}" id="{{ section.settings.offer_layout }}">   
+  <div class="page-width">
+    <div class="slider promotional-items">
+      {% for block in section.blocks %}
+        <div>
+          <div class="promotional__item">
+            {% assign offer_img = block.settings.offer_icon | image_url %}
+            {% if offer_img %}
+              <div class="promotional__item--icon"><img src="{{ block.settings.offer_icon | image_url}}" alt="{{ block.settings.offer_title }}"></div>
+            {% endif %}
+            <div class="promotional__item--content">
+            {% if block.settings.offer_title %}
+              <h3 class="promotional-offer--heading {{ section.settings.offer_heading_size }}">{{ block.settings.offer_title }}</h3>
+            {% endif %}
+            {% if block.settings.offer_content %}
+              <p>{{ block.settings.offer_content }}</p>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>  
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "t:sections.promotional-offers.name",
+    "settings": [
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "t:sections.promotional-offers.settings.background_color.label",
+        "default": "#FFFFFF"
+      },
+      {
+      "type": "select",
+      "id": "offer_heading_size",
+      "options": [
+        {
+          "value": "h4",
+          "label": "t:sections.promotional-offers.settings.offer_heading_size.options__1.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:sections.promotional-offers.settings.offer_heading_size.options__2.label"
+        },
+        {
+          "value": "h2",
+          "label": "t:sections.promotional-offers.settings.offer_heading_size.options__3.label"
+        }
+      ],
+      "default": "h3",
+      "label": "t:sections.promotional-offers.settings.offer_heading_size.label"
+    },
+     {
+            "type": "select",
+            "id": "offer_to_show",
+             "options": [
+              {
+                "value": "2",
+                "label": "t:sections.promotional-offers.settings.offer_to_show.options__1.label"
+              },
+              {
+                "value": "3",
+                "label": "t:sections.promotional-offers.settings.offer_to_show.options__2.label"
+              },
+              {
+                "value": "4",
+                "label": "t:sections.promotional-offers.settings.offer_to_show.options__3.label"
+              }
+            ],
+            "default": "3",
+            "label": "t:sections.promotional-offers.settings.offer_to_show.label"
+          },
+          {
+            "type": "select",
+            "id": "offer_layout",
+              "options": [
+              {
+                "value": "offer_layout1",
+                "label": "t:sections.promotional-offers.settings.offer_layout.options__1.label"
+              },
+              {
+                "value": "offer_layout2",
+                "label": "t:sections.promotional-offers.settings.offer_layout.options__2.label"
+              }
+            ],
+            "label": "t:sections.promotional-offers.settings.offer_layout.label",
+            "default": "offer_layout1"
+          }
+    ],
+     "blocks": [
+      {
+          "type": "promotion_offers",
+          "name": "t:sections.promotional-offers.blocks.promotion_offers.name",
+          "settings": [
+            {
+              "type": "text",
+              "id": "offer_title",
+              "label": "t:sections.promotional-offers.blocks.promotion_offers.settings.offer_title.label"
+            },
+             {
+              "type": "text",
+              "id": "offer_content",
+              "label": "t:sections.promotional-offers.blocks.promotion_offers.settings.offer_content.label"
+            },
+             {
+              "type": "image_picker",
+              "id": "offer_icon",
+              "label": "t:sections.promotional-offers.blocks.promotion_offers.settings.offer_icon.label"
+            }            
+          ]
+        }
+    ],
+    "templates": [
+    "index",
+    "product",
+    "page"
+  ],
+      "presets": [
+        {
+          "name": "t:sections.promotional-offers.presets.name"
+        }
+      ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+  jQuery('.promotional-items').slick({
+      infinite: true,
+      arrows: false,
+      dots: false,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      responsive: [
+        {
+          breakpoint: 992,
+          settings: {
+            slidesToShow: 2
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1
+          }
+        }
+      ]
+    });
+{% endjavascript %}

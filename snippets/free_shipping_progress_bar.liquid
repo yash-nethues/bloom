@@ -1,0 +1,59 @@
+{% comment %}
+<p style="text-align:center">
+  {% if cart.items.size != 0 %}
+      {% if cart.total_price >= goal %} Congratulations! You are eligible for "FREE SHIPPING"
+      {% elsif cart.total_price < goal %}You're only {{ goal | minus: cart.total_price | money }} away from FREE shipping.
+      {% endif %}
+  {% endif %}
+</p>
+{% endcomment %}
+
+<div class="order-shipping {{ cartTime }}">
+{% if settings.shipping_timeline_message %}
+  <p>{{ settings.shipping_timeline_message }}
+        {% if settings.shipping_reserved_time %}
+           <span id="shipping-countdown">{{ settings.shipping_reserved_time }}:00 </span>
+         {% endif %}
+
+        {% if settings.shipping_timeline_message_end %}
+           <span>minutes</span>, {{ settings.shipping_timeline_message_end }}
+        {% endif %}
+  </p>
+{% endif %}
+  
+</div>
+{% if settings.free_shipping_amount %}
+    {% assign goal = settings.free_shipping_amount |  times:100 %}
+    {% assign percentage = cart.total_price |  divided_by:100 %}    
+    <div class="progress-bar">
+      <progress max="{{ goal }}" value="{{ cart.total_price }}">{{ percentage }}</progress>
+    </div>
+{% endif %}
+
+<script>
+    function countdown( elementName, minutes, seconds ){
+    var element, endTime, hours, mins, msLeft, time;
+    function twoDigits( n ){
+        return (n <= 9 ? "0" + n : n);
+    }
+
+    function updateTimer(){
+        msLeft = endTime - (+new Date);
+        if ( msLeft < 1000 ) {
+            element.innerHTML = "Time is up!";
+        } else {
+            time = new Date( msLeft );
+            hours = time.getUTCHours();
+            mins = time.getUTCMinutes();
+            element.innerHTML = (hours ? hours + ':' + twoDigits( mins ) : mins) + ':' + twoDigits( time.getUTCSeconds() );
+            setTimeout( updateTimer, time.getUTCMilliseconds() + 500 );
+        }
+    }
+
+    element = document.getElementById( elementName );
+    endTime = (+new Date) + 1000 * (60*minutes + seconds) + 500;
+    updateTimer();
+}
+  let shippingCounter = '{{ settings.shipping_reserved_time }}'; 
+  countdown( "shipping-countdown", shippingCounter, 0 );
+</script>

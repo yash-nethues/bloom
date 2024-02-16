@@ -1,0 +1,150 @@
+
+<section class="home-category__slider">
+  <div class="page-width">
+    <div class="section--slider">
+    {% if section.settings.browse_category_heading %}
+      <h3 class="section__heading {{ section.settings.heading_size }}"> {{ section.settings.browse_category_heading }}</h3>
+      <div class="slider__nav"></div>
+    {% endif %}
+  
+   {% if section.blocks %}
+      <div class="slider responsive"> 
+          {%- for block in section.blocks -%}
+            {% assign collectionIcon = "" %}
+            {%- assign placeholder_image_index = forloop.index0 | modulo: 4 | plus: 1 -%}
+            {%- assign placeholder_image = 'collection-apparel-' | append: placeholder_image_index -%}
+            <div>
+              <div class="category-item">
+                <a href="" class="category-item--link">
+                  {% assign collectionIcon =  block.settings.collection_icon | image_url %}           
+                  <span class="category-item__image">
+                    {% if collectionIcon != '' %}  
+                      <img class="category-item__image--default" src="{{collectionIcon}}" alt="{{ block.settings.collection.title }}">
+                      {% assign collectionhoverIcon =  block.settings.collection_hover_icon | image_url %}           
+                      {% if collectionhoverIcon != '' %}                    
+                        <img class="category-item__image--hover" src="{{ collectionhoverIcon }}" alt="{{ block.settings.collection.title }}">
+                      {% endif %}
+                    {% else %}                    
+                      <img class="category-item__image--default" src="{{ 'category-icon.svg' | asset_url }}" alt="{{ block.settings.collection.title }}" >
+                      <img class="category-item__image--hover" src="{{ 'category-icon-hover.svg' | asset_url }}" alt="{{ block.settings.collection.title }}">
+                    {% endif %}
+                  </span>
+                  <p class="category-item--name">{{ block.settings.collection.title }}</p>
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+      </div>
+    {% endif %}
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Browse Category",
+    "settings": [
+      {
+        "type":"text",
+        "id":"browse_category_heading",
+        "label":"Section Heading"
+      },
+       {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    }
+    ],
+    "blocks": [
+      {
+          "type": "collection",
+          "name": "t:sections.collage.blocks.collection.name",
+          "settings": [
+            {
+              "type": "collection",
+              "id": "collection",
+              "label": "t:sections.collage.blocks.collection.settings.collection.label"
+            },
+            {
+              "type": "image_picker",
+              "id": "collection_icon",
+              "label": "Collection Icon"
+            },
+             {
+              "type": "image_picker",
+              "id": "collection_hover_icon",
+              "label": "Collection Icon (on hover)"
+            }
+            
+          ]
+        }
+    ],
+    "presets": [
+    {
+      "name": "Browse Category",
+      "blocks": [
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+  jQuery('.section--slider').each(function() {
+    var appendarrow = jQuery(this).find('.slider__nav');
+    jQuery('.responsive').slick({
+      dots: false,
+      infinite: true,
+      speed: 300,
+      slidesToShow: 6,
+      prevArrow: '<span class="slider__nav--prev slick-prev"><svg class="" aria-hidden="true" focusable="false"><use xlink:href="#prev-icon"></svg></span>',
+      nextArrow: '<span class="slider__nav--next slick-next"><svg class="" aria-hidden="true" focusable="false"><use xlink:href="#next-icon"></svg></span>',
+      appendArrows: appendarrow,
+      slidesToScroll: 1,
+      responsive: [
+        {
+          breakpoint: 1200,
+          settings: {
+            slidesToShow: 4
+          }
+        },
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2
+          }
+        }
+        // You can unslick at a given breakpoint now by adding:
+        // settings: "unslick"
+        // instead of a settings object
+      ]
+    });
+  });
+
+{% endjavascript %}

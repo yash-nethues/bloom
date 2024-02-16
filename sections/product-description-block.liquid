@@ -1,0 +1,151 @@
+{% if template.suffix  != "landing-main" %}
+ <div class="product-tabs__section">
+   <div class="page-width">
+     <ul class="product-tabs--items">
+        <li class="product-tabs--list product-tabs--active"><a href="#section_product-description-block"><span class="product_desc">Product Description</span></a></li>
+        <li class="product-tabs--list"><a href="#section_product-specifications"><span class="product_specification">Specification</span></a></li>
+        <li class="product-tabs--list"><a href="#shopify-block-judge_me_reviews"><span class="product_reviews">Reviews</span><span class="product_reviews--count">54</span></a></li>
+     </ul>
+     
+     <div class="product_short_details">
+       <div class="product--img">
+         <img src="{{ product.featured_image | img_url: '200x200' }}" alt="{{product.featured_image.alt}}" />
+       </div>
+       <div class="product--content">
+        <h4>{{ product.title | escape }}</h4>
+        {% render 'price' %}
+       </div>
+     </div>
+     <div class="button-group">
+      <form action="/cart" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+        <button type="submit" class="button button--primary">
+          <svg aria-hidden="true" focusable="false" class="button-icon">
+           <use href="#cart-icon"></use>
+          </svg>
+          Order Now 
+          <svg aria-hidden="true" focusable="false" class="icon icon-cart-arrow">
+            <use href="#cart-link-arrow-icon"></use>
+          </svg>
+       </button>
+      </form>
+     </div>
+   </div>
+  </div>
+  {% endif %}
+  <div class="product-description-block" id="section_product-description-block">
+    <div class="page-width">
+      {% for block in section.blocks %}
+        <div class="block__item">
+          {% if block.settings.desc_image %}
+             <div class="block__item--img">
+              <img src="{{ block.settings.desc_image | img_url: '500x500' }}" alt="Product Image">
+            </div>
+          {% endif %}
+          <div class="block__item--content">
+            <h2>{{ block.settings.block_title }}</h2>
+            <div class="content-discription">
+              <p>{{ block.settings.block_desc }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+</div>
+<div id="modal-discount" class="custom-modal">
+  <div class="custom-modal__inner">
+    <div class="custom-modal__header">
+      <span class="custom-modal__close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" class="icon icon-close" viewBox="0 0 34 34" fill="none">
+          <path d="M10.3623 10.3638L23.0902 23.0917" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          <path d="M10.3623 23.0918L23.0902 10.3639" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </span>
+      <div class="modal-product__info">
+        <div class="modal-product__info--image">
+          <img src="" />
+        </div>
+        <h5>Headline with a [Product name] and product’s key benefit</h5>
+      </div>
+    </div>
+    <div class="custom-modal__body">
+      <div class="given-discound">
+        <h3>Because we notice that you really like the [PRODUCT_NAME], we're giving you a</h3>
+        <h2>5% Discount</h2>
+        <div class="button-group">
+          <button class="button button--primary button--full-width">Claim my 5% discount now!</button>
+        </div>
+        <p>The discount will be automatically applied when you click on the button above.</p>
+      </div>
+    </div>
+    <div class="custom-modal__footer">
+      <div class="hurry-up">
+        <h4>But hurry up! You need to complete your purchase in</h4>
+        <div class="timer-counter">
+          <span>09</span>:<span>59</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+  "name": "Product Description Block",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "product_description_block",
+      "name": "Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "block_title",
+          "label": "Block Title",
+          "default": "Create a clear and concise headline that summarizes one of the product's benefits"
+        },
+        {
+          "type": "image_picker",
+          "id": "desc_image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "label": "Image Width",
+          "min": 0,
+          "max": 500,
+          "step": 10,
+          "default": 300,
+          "unit": "px"
+       },
+       {
+          "type": "range",
+          "id": "image_border_radius",
+          "label": "Image Border Radius",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "default": 0,
+          "unit": "px"    
+      },
+      {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+      },
+      {
+         "type" : "textarea",
+         "id" : "block_desc",
+         "label" : "Description",
+         "default" : "Follow it with a compelling subtext that provide additional details and hightlights the product's uniquie features."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Description Block"
+    }
+  ]
+}
+{% endschema %}

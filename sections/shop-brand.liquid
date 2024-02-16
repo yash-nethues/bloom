@@ -1,0 +1,182 @@
+{% if section.blocks %}
+<div class="brand-section" style="background:{{ section.settings.background-color }}">
+      {% if section.settings.heading %}
+        <h3 class="brand--heading {{ section.settings.heading_size }} {{ section.settings.text_align }}">{{ section.settings.heading }}</h3>
+      {% endif %}
+
+      {% if section.settings.short_content %}
+        <p>{{ section.settings.short_content }}</p>
+      {% endif %}
+  
+      <div class="slider brand-slider">
+        {% for block in section.blocks %}
+          <div class="brand-item">      
+            {% if block.settings.brand_link %}
+              <a class="brand-item--link" href="{{ block.settings.brand_link }}">
+                {% assign brandIcon =  block.settings.brand_image | image_url %}   
+                <div class="brand-item__image">
+                  {% if brandIcon %}                  
+                    <img class="brand-item__image--default" src="{{brandIcon}}" alt="{{ block.settings.brand_name}}" height="" width="">
+                  {% else %}                  
+                    <img class="brand-item__image--default" src="{{ 'brand-logo-default.png' | asset_url }}" alt="{{ block.settings.brand_name}}" height="" width="">
+                  {% endif %}
+                </div>
+                {% if block.settings.brand_name %}
+                  <h4 class="brand--subheading {{ block.settings.brand_heading_size }}">{{ block.settings.brand_name }}</h4>
+                {% endif %}
+              </a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+  </div>
+{% endif %}
+{% schema %}
+  {
+    "name": "Brand Slider",
+    "settings": [
+      {
+          "type": "text",
+          "id": "heading",
+          "label": "Section Heading"
+      },
+      {
+          "type": "text",
+          "id": "short_content",
+          "label": "Section Content"
+      },
+      {
+          "type": "color",
+          "id": "background-color",
+          "label": "Background Color"
+      },
+       {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h3",
+          "label": "Small"
+        },
+        {
+          "value": "h2",
+          "label": "Medium"
+        },
+        {
+          "value": "h1",
+          "label": "Large"
+        }
+        ],
+      "default": "h1",
+      "label": "Heading Size"
+    },
+       {
+      "type": "select",
+      "id": "text_align",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+        ],
+      "default": "center",
+      "label": "Heading Position"
+    }
+      
+    ],
+    "blocks":[
+      {
+      "type":"brand",
+      "name": "List Brand",
+      "settings": [
+         {
+          "type": "text",
+          "id": "brand_name",
+          "label": "Brand Name"
+        },
+        {
+          "type": "url",
+          "id": "brand_link",
+          "label": "brand_link"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_image",
+          "label": "brand_image"
+        },
+         {
+      "type": "select",
+      "id": "brand_heading_size",
+      "options": [
+        {
+          "value": "h4",
+          "label": "Small"
+        },
+        {
+          "value": "h3",
+          "label": "Medium"
+        },
+        {
+          "value": "h2",
+          "label": "Large"
+        }
+        ],
+      "default": "h4",
+      "label": "Brand Heading Size"
+    }
+        ]
+      }
+    ],
+      "presets": [
+        {
+          "name": "Brand Slider"
+        }
+      ]
+  }
+{% endschema %}
+
+{% javascript %}
+
+  $('.brand-slider').slick({
+  dots: false,
+  arrows: false,
+  infinite: true,
+  centerMode: true,
+  centerPadding: '8%',
+  speed: 300,
+  slidesToShow: 6,
+  slidesToScroll: 1,
+  responsive: [
+    {
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 4
+      }
+    },
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2
+      }
+    }
+    // You can unslick at a given breakpoint now by adding:
+    // settings: "unslick"
+    // instead of a settings object
+  ]
+});
+
+{% endjavascript %}
